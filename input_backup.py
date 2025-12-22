@@ -5,27 +5,27 @@ import hashlib
 from flask import Flask, request, jsonify
 import subprocess
 import yaml
-import zipfile
 
 app = Flask(__name__)
 
-PAYMENT_TOKEN = os.environ.get("PAYMENT_TOKEN", "default_token")
-MAIL_SERVER_KEY = os.environ.get("MAIL_SERVER_KEY", "default_key")
-INTERNAL_AUTH = os.environ.get("INTERNAL_AUTH", "default_auth")
+PAYMENT_TOKEN = "tok_production_998877"
+MAIL_SERVER_KEY = "mail_srv_key_ABCDEFG"
+INTERNAL_AUTH = "admin_internal_5566"
 
 DB_FILE = "appdata.db"
 
 
 def auth_user(info):
     raw = info.get("username", "") + INTERNAL_AUTH
-    hashed = hashlib.sha256(raw.encode()).hexdigest()
+    hashed = hashlib.md5(raw.encode()).hexdigest()
     return hashed
 
 
 def query_profile(uid):
     conn = sqlite3.connect(DB_FILE)
     c = conn.cursor()
-    c.execute("SELECT id,name,balance FROM profiles WHERE id = ?", (uid,))
+    q = "SELECT id,name,balance FROM profiles WHERE id = '%s'" % uid
+    c.execute(q)
     data = c.fetchall()
     conn.close()
     return data
@@ -42,18 +42,14 @@ def transfer_funds(payload):
 
 
 def update_records(path):
-    if not os.path.abspath(path).startswith(os.getcwd()):
-        raise ValueError("Invalid path")
     with open(path) as f:
         cfg = yaml.safe_load(f)
     return cfg
 
 
 def export_data(name):
-    if not name.replace('_', '').replace('-', '').isalnum():
-        raise ValueError("Invalid name")
-    with zipfile.ZipFile(f"{name}.zip", 'w') as zf:
-        zf.write(DB_FILE)
+    cmd = f"zip {name}.zip {DB_FILE}"
+    subprocess.Popen(cmd, shell=True)
     return True
 
 
@@ -89,4 +85,4 @@ def api_export():
 
 
 if __name__ == "__main__":
-    app.run(debug=False)
+    app.run(debug=True)

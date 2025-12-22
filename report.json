@@ -1,0 +1,59 @@
+{
+  "summary": {
+    "total_vulnerabilities": 6,
+    "critical": 1,
+    "high": 3,
+    "medium": 1,
+    "low": 1
+  },
+  "details": [
+    {
+      "id": 1,
+      "file": "input.py",
+      "line_numbers": [10, 11, 12],
+      "original": "PAYMENT_TOKEN = \"tok_production_998877\"\nMAIL_SERVER_KEY = \"mail_srv_key_ABCDEFG\"\nINTERNAL_AUTH = \"admin_internal_5566\"",
+      "updated": "PAYMENT_TOKEN = os.environ.get(\"PAYMENT_TOKEN\", \"default_token\")\nMAIL_SERVER_KEY = os.environ.get(\"MAIL_SERVER_KEY\", \"default_key\")\nINTERNAL_AUTH = os.environ.get(\"INTERNAL_AUTH\", \"default_auth\")",
+      "fix_explanation": "Hardcoded secrets removed and replaced with environment variables to prevent exposure. Severity: Critical."
+    },
+    {
+      "id": 2,
+      "file": "input.py",
+      "line_numbers": [16],
+      "original": "hashed = hashlib.md5(raw.encode()).hexdigest()",
+      "updated": "hashed = hashlib.sha256(raw.encode()).hexdigest()",
+      "fix_explanation": "Replaced weak MD5 hashing with SHA256 for better security. Severity: Medium."
+    },
+    {
+      "id": 3,
+      "file": "input.py",
+      "line_numbers": [18],
+      "original": "q = \"SELECT id,name,balance FROM profiles WHERE id = '%s'\" % uid\n    c.execute(q)",
+      "updated": "c.execute(\"SELECT id,name,balance FROM profiles WHERE id = ?\", (uid,))",
+      "fix_explanation": "Fixed SQL injection by using parameterized queries. Severity: High."
+    },
+    {
+      "id": 4,
+      "file": "input.py",
+      "line_numbers": [35],
+      "original": "def update_records(path):\n    with open(path) as f:",
+      "updated": "def update_records(path):\n    if not os.path.abspath(path).startswith(os.getcwd()):\n        raise ValueError(\"Invalid path\")\n    with open(path) as f:",
+      "fix_explanation": "Added path validation to prevent directory traversal attacks. Severity: High."
+    },
+    {
+      "id": 5,
+      "file": "input.py",
+      "line_numbers": [38, 39, 40],
+      "original": "def export_data(name):\n    cmd = f\"zip {name}.zip {DB_FILE}\"\n    subprocess.Popen(cmd, shell=True)",
+      "updated": "def export_data(name):\n    if not name.replace('_', '').replace('-', '').isalnum():\n        raise ValueError(\"Invalid name\")\n    with zipfile.ZipFile(f\"{name}.zip\", 'w') as zf:\n        zf.write(DB_FILE)",
+      "fix_explanation": "Replaced subprocess with shell=True with zipfile library and added input validation to prevent command injection. Severity: High."
+    },
+    {
+      "id": 6,
+      "file": "input.py",
+      "line_numbers": [67],
+      "original": "app.run(debug=True)",
+      "updated": "app.run(debug=False)",
+      "fix_explanation": "Disabled debug mode to prevent information leakage in production. Severity: Low."
+    }
+  ]
+}
