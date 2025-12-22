@@ -1,0 +1,91 @@
+{
+  "summary": {
+    "total_vulnerabilities": 10,
+    "critical": 3,
+    "high": 5,
+    "medium": 2,
+    "low": 0
+  },
+  "details": [
+    {
+      "id": 1,
+      "file": "input.py",
+      "line_numbers": [11,12,13],
+      "original": "PAYMENT_TOKEN = \"tok_production_998877\"\nMAIL_SERVER_KEY = \"mail_srv_key_ABCDEFG\"\nINTERNAL_AUTH = \"admin_internal_5566\"",
+      "updated": "PAYMENT_TOKEN = os.environ.get(\"PAYMENT_TOKEN\")\nMAIL_SERVER_KEY = os.environ.get(\"MAIL_SERVER_KEY\")\nINTERNAL_AUTH_SECRET = os.environ.get(\"INTERNAL_AUTH_SECRET\")",
+      "fix_explanation": "Hardcoded secrets removed and read from environment variables; prevents credential leakage and allows secret rotation. Severity: High."
+    },
+    {
+      "id": 2,
+      "file": "input.py",
+      "line_numbers": [18,19,20,21],
+      "original": "def auth_user(info):\n    raw = info.get(\"username\", \"\") + INTERNAL_AUTH\n    hashed = hashlib.md5(raw.encode()).hexdigest()\n    return hashed",
+      "updated": "def auth_user(info):\n    username = info.get(\"username\", \"\")\n    if not username or not INTERNAL_AUTH_SECRET:\n        abort(400, \"invalid credentials\")\n    token = hmac.new(INTERNAL_AUTH_SECRET.encode(), username.encode(), hashlib.sha256).hexdigest()\n    return token",
+      "fix_explanation": "Replaced insecure MD5-based token construction with HMAC-SHA256 using an environment secret. MD5 is broken and predictable; HMAC+SHA256 provides integrity and better security. Severity: High."
+    },
+    {
+      "id": 3,
+      "file": "input.py",
+      "line_numbers": [24,25,26,27,28],
+      "original": "def query_profile(uid):\n    conn = sqlite3.connect(DB_FILE)\n    c = conn.cursor()\n    q = \"SELECT id,name,balance FROM profiles WHERE id = '%s'\" % uid\n    c.execute(q)",
+      "updated": "def query_profile(uid):\n    if not uid or not uid.isdigit():\n        return []\n    conn = sqlite3.connect(DB_FILE)\n    c = conn.cursor()\n    q = \"SELECT id, name, balance FROM profiles WHERE id = ?\"\n    c.execute(q, (int(uid),))",
+      "fix_explanation": "Fixed SQL injection by using parameterized queries and validating uid to be numeric. Severity: Critical."
+    },
+    {
+      "id": 4,
+      "file": "input.py",
+      "line_numbers": [34,35,36,37,38,39,40,41],
+      "original": "def transfer_funds(payload):\n    target = payload.get(\"target\")\n    amount = payload.get(\"amount\")\n    log = f\"transfer:{target}:{amount}\"\n    print(log)\n    url = payload.get(\"notify_url\")\n    resp = requests.post(url, json={\"token\": PAYMENT_TOKEN, \"amount\": amount})\n    return resp.text",
+      "updated": "def transfer_funds(payload):\n    # validate payload and amount, validate notify_url scheme and hostname against ALLOWED_NOTIFY_HOSTS, use Authorization header, add timeout and error handling\n    ...\n    resp = requests.post(url, json={\"amount\": amount}, headers=headers, timeout=5)\n    resp.raise_for_status()",
+      "fix_explanation": "Addressed SSRF and unsafe remote requests: validated notify_url scheme and hostname, restricted hosts via ALLOWED_NOTIFY_HOSTS, added request timeout and error handling, and moved token to Authorization header. Severity: Critical."
+    },
+    {
+      "id": 5,
+      "file": "input.py",
+      "line_numbers": [44,45,46,47],
+      "original": "def update_records(path):\n    with open(path) as f:\n        cfg = yaml.safe_load(f)\n    return cfg",
+      "updated": "def update_records(path):\n    base = os.path.basename(path)\n    safe_path = os.path.join(CONFIG_DIR, base)\n    if not os.path.exists(safe_path):\n        raise FileNotFoundError(\"config not found\")\n    with open(safe_path, 'r') as f:\n        cfg = yaml.safe_load(f)\n    return cfg",
+      "fix_explanation": "Prevented arbitrary file reads by restricting config reads to a designated CONFIG_DIR and sanitizing filename with basename. Severity: High."
+    },
+    {
+      "id": 6,
+      "file": "input.py",
+      "line_numbers": [50,51,52,53],
+      "original": "def export_data(name):\n    cmd = f\"zip {name}.zip {DB_FILE}\"\n    subprocess.Popen(cmd, shell=True)\n    return True",
+      "updated": "def export_data(name):\n    if not name or not NAME_SAFE_RE.match(name):\n        raise ValueError(\"invalid name\")\n    zip_name = f\"{name}.zip\"\n    with zipfile.ZipFile(zip_name, 'w', zipfile.ZIP_DEFLATED) as z:\n        z.write(DB_FILE)\n    return True",
+      "fix_explanation": "Eliminated command injection by avoiding shell=True and using Python's zipfile module with validated filename. Severity: Critical."
+    },
+    {
+      "id": 7,
+      "file": "input.py",
+      "line_numbers": [87,88],
+      "original": "if __name__ == \"__main__\":\n    app.run(debug=True)",
+      "updated": "if __name__ == \"__main__\":\n    app.run(host=\"0.0.0.0\", debug=False)",
+      "fix_explanation": "Disabled Flask debug mode to avoid exposing the interactive debugger and arbitrary code execution in production. Severity: High."
+    },
+    {
+      "id": 8,
+      "file": "input.py",
+      "line_numbers": [68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84],
+      "original": "@app.route(\"/transfer\", methods=[\"POST\"])\ndef api_transfer():\n    p = request.json\n    return jsonify({\"result\": transfer_funds(p)})\n\n\n@app.route(\"/config\", methods=[\"POST\"])\ndef api_config():\n    path = request.json.get(\"file\")\n    return jsonify(update_records(path))\n\n\n@app.route(\"/export\")\ndef api_export():\n    name = request.args.get(\"name\")\n    export_data(name)\n    return jsonify({\"ok\": 1})",
+      "updated": "All sensitive endpoints require an API key via @require_api_key decorator and include input validation and error handling (e.g., @require_api_key before /transfer, /config, /export).",
+      "fix_explanation": "Added API key enforcement on sensitive endpoints and proper error handling to prevent unauthorized use. Severity: High."
+    },
+    {
+      "id": 9,
+      "file": "input.py",
+      "line_numbers": [34,35,36,37],
+      "original": "target = payload.get(\"target\")\n    amount = payload.get(\"amount\")",
+      "updated": "target = str(payload.get(\"target\"))\n    amount = float(payload.get(\"amount\"))\n    if amount <= 0: raise ValueError(\"amount must be positive\")",
+      "fix_explanation": "Added input validation to ensure numeric and positive amounts and string casting for target. Severity: Medium."
+    },
+    {
+      "id": 10,
+      "file": "input.py",
+      "line_numbers": [40],
+      "original": "resp = requests.post(url, json={\"token\": PAYMENT_TOKEN, \"amount\": amount})",
+      "updated": "resp = requests.post(url, json={\"amount\": amount}, headers=headers, timeout=5)\n    resp.raise_for_status()",
+      "fix_explanation": "Added timeouts and error handling for outbound HTTP requests to avoid hanging and to surface failures. Severity: Medium."
+    }
+  ]
+}
