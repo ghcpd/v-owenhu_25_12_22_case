@@ -1,0 +1,54 @@
+[2025-12-22T06:37:06.801434Z] auto_test started (env=Windows, docker=False)
+[2025-12-22T06:37:06.801434Z] Running tests for input_backup.py using D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\tests\run_test.py
+[2025-12-22T06:37:06.801434Z] FILE: input_backup.py
+[2025-12-22T06:37:06.801434Z] EXIT: 0
+[2025-12-22T06:37:06.801434Z] STDOUT:
+Test file: D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\input_backup.py
+Matches: {'hardcoded_token': True, 'md5': True, 'shell': True, 'sql_interp': True, 'debug': True}
+EXPECTED VULNERABLE: vulnerabilities detected
+[2025-12-22T06:37:06.801434Z] STATUS: PASS
+[2025-12-22T06:37:06.913713Z] Running tests for input.py using D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\tests\run_test.py
+[2025-12-22T06:37:06.913713Z] FILE: input.py
+[2025-12-22T06:37:06.913713Z] EXIT: 0
+[2025-12-22T06:37:06.913713Z] STDOUT:
+Test file: D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\input.py
+Matches: {'hardcoded_token': False, 'md5': False, 'shell': False, 'sql_interp': False, 'debug': False}
+EXPECTED SECURE: no vulnerabilities found
+[2025-12-22T06:37:06.913713Z] STATUS: PASS
+[2025-12-22T06:37:06.972464Z] TEST PASSED
+[2025-12-22T06:38:35.629748Z] auto_test started (env=Windows, docker=False)
+[2025-12-22T06:38:35.629748Z] Running tests for input_backup.py using D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\tests\run_test.py
+[2025-12-22T06:38:35.629748Z] FILE: input_backup.py
+[2025-12-22T06:38:35.629748Z] EXIT: 0
+[2025-12-22T06:38:35.629748Z] STDOUT:
+Test file: D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\input_backup.py
+Matches: {'hardcoded_token': True, 'md5': True, 'shell': True, 'sql_interp': True, 'debug': True}
+EXPECTED VULNERABLE: vulnerabilities detected
+[2025-12-22T06:38:35.629748Z] STATUS: PASS
+[2025-12-22T06:38:35.697764Z] Running tests for input.py using D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\tests\run_test.py
+[2025-12-22T06:38:35.697764Z] FILE: input.py
+[2025-12-22T06:38:35.697764Z] EXIT: 0
+[2025-12-22T06:38:35.697764Z] STDOUT:
+Test file: D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\input.py
+Matches: {'hardcoded_token': False, 'md5': False, 'shell': False, 'sql_interp': False, 'debug': False}
+EXPECTED SECURE: no vulnerabilities found
+[2025-12-22T06:38:35.697764Z] STATUS: PASS
+[2025-12-22T06:38:35.765287Z] TEST PASSED
+[2025-12-22T06:51:09.083532Z] auto_test started (env=Windows, docker=False)
+[2025-12-22T06:51:09.083532Z] Running tests for input_backup.py using D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\tests\run_test.py
+[2025-12-22T06:51:09.083532Z] FILE: input_backup.py
+[2025-12-22T06:51:09.083532Z] EXIT: 0
+[2025-12-22T06:51:09.083532Z] STDOUT:
+Test file: D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\input_backup.py
+Matches: {'hardcoded_token': True, 'md5': True, 'shell': True, 'sql_interp': True, 'debug': True}
+EXPECTED VULNERABLE: vulnerabilities detected
+[2025-12-22T06:51:09.083532Z] STATUS: PASS
+[2025-12-22T06:51:09.160363Z] Running tests for input.py using D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\tests\run_test.py
+[2025-12-22T06:51:09.160363Z] FILE: input.py
+[2025-12-22T06:51:09.160363Z] EXIT: 0
+[2025-12-22T06:51:09.160363Z] STDOUT:
+Test file: D:\Bug Bash\API\case_25_12_22\case1\v-owenhu_25_12_22_case\input.py
+Matches: {'hardcoded_token': False, 'md5': False, 'shell': False, 'sql_interp': False, 'debug': False}
+EXPECTED SECURE: no vulnerabilities found
+[2025-12-22T06:51:09.160363Z] STATUS: PASS
+[2025-12-22T06:51:09.239161Z] TEST PASSED
