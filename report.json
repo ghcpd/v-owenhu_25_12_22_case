@@ -1,0 +1,99 @@
+{
+  "summary": {
+    "total_vulnerabilities": 11,
+    "critical": 5,
+    "high": 3,
+    "medium": 2,
+    "low": 1
+  },
+  "details": [
+    {
+      "id": 1,
+      "file": "input.py",
+      "line_numbers": [11],
+      "original": "PAYMENT_TOKEN = \"tok_production_998877\"",
+      "updated": "PAYMENT_TOKEN is read from environment (no hardcoded secret)",
+      "fix_explanation": "Hardcoded production token removed and loaded from environment. Severity: critical. Rationale: hardcoded secrets allow immediate compromise; replacement forces use of a secret manager or env vars."
+    },
+    {
+      "id": 2,
+      "file": "input.py",
+      "line_numbers": [12],
+      "original": "MAIL_SERVER_KEY = \"mail_srv_key_ABCDEFG\"",
+      "updated": "MAIL_SERVER_KEY is read from environment",
+      "fix_explanation": "Removed hardcoded mail server key and load from environment. Severity: high."
+    },
+    {
+      "id": 3,
+      "file": "input.py",
+      "line_numbers": [13],
+      "original": "INTERNAL_AUTH = \"admin_internal_5566\"",
+      "updated": "AUTH_SECRET is read from environment and used with HMAC-SHA256",
+      "fix_explanation": "Internal auth secret removed from source. Using an env-provided secret and HMAC-SHA256 for token derivation. Severity: critical."
+    },
+    {
+      "id": 4,
+      "file": "input.py",
+      "line_numbers": [18,20,21],
+      "original": "hashed = hashlib.md5(raw.encode()).hexdigest()",
+      "updated": "HMAC-SHA256 (or sha256 fallback in dev) via hmac.new(AUTH_SECRET, username)",
+      "fix_explanation": "Replaced insecure MD5 hashing with HMAC-SHA256 and removed reliance on a hardcoded secret. Severity: high."
+    },
+    {
+      "id": 5,
+      "file": "input.py",
+      "line_numbers": [24,27,28],
+      "original": "q = \"SELECT id,name,balance FROM profiles WHERE id = '%s'\" % uid\n    c.execute(q)",
+      "updated": "parameterised query: c.execute(\"SELECT id,name,balance FROM profiles WHERE id = ?\", (uid_int,))",
+      "fix_explanation": "Fixed SQL injection by validating `id` as integer and using parameterised queries. Severity: critical."
+    },
+    {
+      "id": 6,
+      "file": "input.py",
+      "line_numbers": [34,39,40],
+      "original": "url = payload.get(\"notify_url\")\n    resp = requests.post(url, json={\"token\": PAYMENT_TOKEN, \"amount\": amount})",
+      "updated": "validate notify_url against allowlist; send token in Authorization header and use timeout/verify",
+      "fix_explanation": "Prevented SSRF and secret exfiltration by validating notify URLs and using safer request patterns (headers + timeouts). Severity: medium."
+    },
+    {
+      "id": 7,
+      "file": "input.py",
+      "line_numbers": [37,38],
+      "original": "log = f\"transfer:{target}:{amount}\"\n    print(log)",
+      "updated": "use structured logging and do NOT print sensitive tokens; sensitive fields are redacted",
+      "fix_explanation": "Replaced plain prints with structured logging and avoid logging sensitive data. Severity: low."
+    },
+    {
+      "id": 8,
+      "file": "input.py",
+      "line_numbers": [44,45,46],
+      "original": "with open(path) as f:\n        cfg = yaml.safe_load(f)",
+      "updated": "restrict filenames to CONFIG_DIR and validate path before yaml.safe_load",
+      "fix_explanation": "Prevented arbitrary file reads (path traversal / data disclosure) by restricting config reads to a designated directory. Severity: high."
+    },
+    {
+      "id": 9,
+      "file": "input.py",
+      "line_numbers": [50,51,52],
+      "original": "cmd = f\"zip {name}.zip {DB_FILE}\"\n    subprocess.Popen(cmd, shell=True)",
+      "updated": "use zipfile.ZipFile to create archives and validate `name` against a strict regex",
+      "fix_explanation": "Eliminated command injection and removed shell usage by using the stdlib zipfile API. Severity: critical."
+    },
+    {
+      "id": 10,
+      "file": "input.py",
+      "line_numbers": [87,88],
+      "original": "app.run(debug=True)",
+      "updated": "app.run(..., debug=False) and require debug enabled explicitly via env in development only",
+      "fix_explanation": "Disabled Flask debug mode by default to avoid remote code execution via the Werkzeug debugger. Severity: critical."
+    },
+    {
+      "id": 11,
+      "file": "input.py",
+      "line_numbers": [40],
+      "original": "requests.post(url, json=...)  # no timeout/verify",
+      "updated": "requests.post(..., timeout=5, verify=True)",
+      "fix_explanation": "Added request timeouts and SSL verification to avoid DoS/blocking and MITM risks. Severity: medium."
+    }
+  ]
+}
