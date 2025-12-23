@@ -1,0 +1,124 @@
+2025-12-23T02:17:59.280312Z RUN START
+2025-12-23T02:17:59.280312Z RUN input_backup.py: run_test.bat "D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input_backup.py"
+'run_test.bat' is not recognized as an internal or external command,
+operable program or batch file.
+
+2025-12-23T02:17:59.299558Z input_backup.py TEST FAILED (exit 1)
+2025-12-23T02:17:59.299558Z RUN input.py: run_test.bat "D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input.py"
+'run_test.bat' is not recognized as an internal or external command,
+operable program or batch file.
+
+2025-12-23T02:17:59.324348Z input.py TEST FAILED (exit 1)
+2025-12-23T02:17:59.324348Z TEST FAILED
+
+2025-12-23T02:19:18.093897Z RUN START
+2025-12-23T02:19:18.093897Z RUN input_backup.py: D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\run_test.bat "D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input_backup.py"
+'D:\Bug' is not recognized as an internal or external command,
+operable program or batch file.
+
+2025-12-23T02:19:18.110429Z input_backup.py TEST FAILED (exit 1)
+2025-12-23T02:19:18.110429Z RUN input.py: D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\run_test.bat "D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input.py"
+'D:\Bug' is not recognized as an internal or external command,
+operable program or batch file.
+
+2025-12-23T02:19:18.124168Z input.py TEST FAILED (exit 1)
+2025-12-23T02:19:18.124168Z TEST FAILED
+
+2025-12-23T02:21:30.601248Z RUN START
+2025-12-23T02:21:30.601248Z RUN input_backup.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input_backup.py']
+Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input_backup.py""=="" was unexpected at this time.
+
+2025-12-23T02:21:30.641477Z input_backup.py TEST FAILED (exit 255)
+2025-12-23T02:21:30.641477Z RUN input.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input.py']
+Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input.py""=="" was unexpected at this time.
+
+2025-12-23T02:21:30.664085Z input.py TEST FAILED (exit 255)
+2025-12-23T02:21:30.664085Z TEST FAILED
+
+2025-12-23T02:22:53.708549Z RUN START
+2025-12-23T02:22:53.708549Z RUN input_backup.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input_backup.py']
+python: can't open file 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\tests\\run_tests.py': [Errno 2] No such file or directory
+
+2025-12-23T02:22:53.791081Z input_backup.py TEST FAILED (exit 2)
+2025-12-23T02:22:53.791081Z RUN input.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input.py']
+python: can't open file 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\tests\\run_tests.py': [Errno 2] No such file or directory
+
+2025-12-23T02:22:53.842305Z input.py TEST FAILED (exit 2)
+2025-12-23T02:22:53.842305Z TEST FAILED
+
+2025-12-23T02:24:29.374205Z RUN START
+2025-12-23T02:24:29.374205Z RUN input_backup.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input_backup.py']
+VULN: SQL injection possible (multiple rows returned)
+VULN: update_records allows arbitrary file read
+Source vulnerability findings: ['hardcoded payment token', 'hardcoded internal auth', 'use of MD5', 'string-interpolated SQL', 'shell execution with user input']
+DB tests passed: False
+update_records restricted: False
+Security checks FAILED for module: D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input_backup.py
+
+2025-12-23T02:24:30.042410Z input_backup.py TEST FAILED (exit 1)
+2025-12-23T02:24:30.042410Z RUN input.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input.py']
+Source vulnerability findings: []
+DB tests passed: True
+update_records restricted: True
+All security checks passed for module: D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input.py
+
+2025-12-23T02:24:30.629977Z input.py TEST PASSED (exit 0)
+2025-12-23T02:24:30.629977Z TEST PASSED
+
+2025-12-23T02:26:34.798697Z RUN START
+2025-12-23T02:26:34.798697Z RUN input_backup.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input_backup.py']
+VULN: SQL injection possible (multiple rows returned)
+VULN: update_records allows arbitrary file read
+Source vulnerability findings: ['hardcoded payment token', 'hardcoded internal auth', 'use of MD5', 'string-interpolated SQL', 'shell execution with user input']
+DB tests passed: False
+update_records restricted: False
+Security checks FAILED for module: D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input_backup.py
+
+2025-12-23T02:26:35.665695Z input_backup.py TEST FAILED (exit 1)
+2025-12-23T02:26:35.665695Z RUN input.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input.py']
+Source vulnerability findings: []
+DB tests passed: True
+update_records restricted: True
+All security checks passed for module: D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input.py
+
+2025-12-23T02:26:36.312006Z input.py TEST PASSED (exit 0)
+2025-12-23T02:26:36.312006Z TEST PASSED
+
+2025-12-23T02:28:24.081806Z RUN START
+2025-12-23T02:28:24.081806Z RUN input_backup.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input_backup.py']
+VULN: SQL injection possible (multiple rows returned)
+VULN: update_records allows arbitrary file read
+Source vulnerability findings: ['hardcoded payment token', 'hardcoded internal auth', 'use of MD5', 'string-interpolated SQL', 'shell execution with user input']
+DB tests passed: False
+update_records restricted: False
+Security checks FAILED for module: D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input_backup.py
+
+2025-12-23T02:28:24.702426Z input_backup.py TEST FAILED (exit 1)
+2025-12-23T02:28:24.702426Z RUN input.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input.py']
+Source vulnerability findings: []
+DB tests passed: True
+update_records restricted: True
+All security checks passed for module: D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input.py
+
+2025-12-23T02:28:25.300261Z input.py TEST PASSED (exit 0)
+2025-12-23T02:28:25.301343Z TEST PASSED
+
+2025-12-23T02:28:43.254337Z RUN START
+2025-12-23T02:28:43.254337Z RUN input_backup.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input_backup.py']
+VULN: SQL injection possible (multiple rows returned)
+VULN: update_records allows arbitrary file read
+Source vulnerability findings: ['hardcoded payment token', 'hardcoded internal auth', 'use of MD5', 'string-interpolated SQL', 'shell execution with user input']
+DB tests passed: False
+update_records restricted: False
+Security checks FAILED for module: D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input_backup.py
+
+2025-12-23T02:28:43.850055Z input_backup.py TEST FAILED (exit 1)
+2025-12-23T02:28:43.850055Z RUN input.py: ['D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\run_test.bat', 'D:\\Bug Bash\\API\\case_25_12_22\\case5\\v-owenhu_25_12_22_case\\input.py']
+Source vulnerability findings: []
+DB tests passed: True
+update_records restricted: True
+All security checks passed for module: D:\Bug Bash\API\case_25_12_22\case5\v-owenhu_25_12_22_case\input.py
+
+2025-12-23T02:28:44.456283Z input.py TEST PASSED (exit 0)
+2025-12-23T02:28:44.457303Z TEST PASSED
+
