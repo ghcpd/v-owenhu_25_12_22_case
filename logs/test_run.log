@@ -1,0 +1,196 @@
+[2025-12-23T02:18:46.059226Z] RUN
+Running: cmd /c run_test.bat backup
+[2025-12-23T02:18:46.105168Z] OUTPUT
+The syntax of the command is incorrect.
+
+[2025-12-23T02:18:46.105168Z] STATUS
+backup TEST FAILED (exit_code=255)
+[2025-12-23T02:18:46.105168Z] RUN
+Running: cmd /c run_test.bat fixed
+[2025-12-23T02:18:46.146508Z] OUTPUT
+The syntax of the command is incorrect.
+
+[2025-12-23T02:18:46.147625Z] STATUS
+fixed TEST FAILED (exit_code=255)
+[2025-12-23T02:18:46.147625Z] FINAL
+TEST FAILED
+[2025-12-23T02:20:43.323306Z] RUN
+Running: cmd /c D:\Bug Bash\API\case_25_12_22\case4\v-owenhu_25_12_22_case\run_test.bat backup
+[2025-12-23T02:20:44.018611Z] OUTPUT
+test_export_uses_shell (tests.test_input_backup.TestBackupVulnerabilities.test_export_uses_shell) ... ok
+test_sql_injection_present (tests.test_input_backup.TestBackupVulnerabilities.test_sql_injection_present) ... ok
+test_transfer_sends_hardcoded_token (tests.test_input_backup.TestBackupVulnerabilities.test_transfer_sends_hardcoded_token) ... ok
+test_update_records_can_read_arbitrary_file (tests.test_input_backup.TestBackupVulnerabilities.test_update_records_can_read_arbitrary_file) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.034s
+
+OK
+transfer:x:1
+
+[2025-12-23T02:20:44.018611Z] STATUS
+backup TEST PASSED (exit_code=0)
+[2025-12-23T02:20:44.018611Z] RUN
+Running: cmd /c D:\Bug Bash\API\case_25_12_22\case4\v-owenhu_25_12_22_case\run_test.bat fixed
+[2025-12-23T02:20:44.764299Z] OUTPUT
+test_export_is_safe_and_creates_zip (tests.test_input_fixed.TestFixedSecurity.test_export_is_safe_and_creates_zip) ... ok
+test_sql_injection_prevented (tests.test_input_fixed.TestFixedSecurity.test_sql_injection_prevented) ... ok
+test_transfer_allows_localhost (tests.test_input_fixed.TestFixedSecurity.test_transfer_allows_localhost) ... INFO:secure_app:transfer request: target=x amount=1
+ok
+test_transfer_rejects_external_notify (tests.test_input_fixed.TestFixedSecurity.test_transfer_rejects_external_notify) ... INFO:secure_app:transfer request: target=x amount=1
+ok
+test_update_records_restricts_path (tests.test_input_fixed.TestFixedSecurity.test_update_records_restricts_path) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.068s
+
+OK
+
+[2025-12-23T02:20:44.764299Z] STATUS
+fixed TEST PASSED (exit_code=0)
+[2025-12-23T02:20:44.765776Z] FINAL
+TEST PASSED
+[2025-12-23T02:23:25.216105Z] RUN
+Running: cmd /c D:\Bug Bash\API\case_25_12_22\case4\v-owenhu_25_12_22_case\run_test.bat backup
+[2025-12-23T02:23:26.133138Z] OUTPUT
+test_export_uses_shell (tests.test_input_backup.TestBackupVulnerabilities.test_export_uses_shell) ... ok
+test_sql_injection_present (tests.test_input_backup.TestBackupVulnerabilities.test_sql_injection_present) ... ok
+test_transfer_sends_hardcoded_token (tests.test_input_backup.TestBackupVulnerabilities.test_transfer_sends_hardcoded_token) ... ok
+test_update_records_can_read_arbitrary_file (tests.test_input_backup.TestBackupVulnerabilities.test_update_records_can_read_arbitrary_file) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.034s
+
+OK
+transfer:x:1
+
+[2025-12-23T02:23:26.133138Z] STATUS
+backup TEST PASSED (exit_code=0)
+[2025-12-23T02:23:26.133138Z] RUN
+Running: cmd /c D:\Bug Bash\API\case_25_12_22\case4\v-owenhu_25_12_22_case\run_test.bat fixed
+[2025-12-23T02:23:26.770909Z] OUTPUT
+test_export_is_safe_and_creates_zip (tests.test_input_fixed.TestFixedSecurity.test_export_is_safe_and_creates_zip) ... ok
+test_sql_injection_prevented (tests.test_input_fixed.TestFixedSecurity.test_sql_injection_prevented) ... ok
+test_transfer_allows_localhost (tests.test_input_fixed.TestFixedSecurity.test_transfer_allows_localhost) ... INFO:secure_app:transfer request: target=x amount=1
+ok
+test_transfer_rejects_external_notify (tests.test_input_fixed.TestFixedSecurity.test_transfer_rejects_external_notify) ... INFO:secure_app:transfer request: target=x amount=1
+ok
+test_update_records_restricts_path (tests.test_input_fixed.TestFixedSecurity.test_update_records_restricts_path) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.057s
+
+OK
+
+[2025-12-23T02:23:26.770909Z] STATUS
+fixed TEST PASSED (exit_code=0)
+[2025-12-23T02:23:26.770909Z] FINAL
+TEST PASSED
+[2025-12-23T02:24:39.163411Z] RUN
+Running: cmd /c D:\Bug Bash\API\case_25_12_22\case4\v-owenhu_25_12_22_case\run_test.bat backup
+[2025-12-23T02:24:39.859077Z] OUTPUT
+test_export_uses_shell (tests.test_input_backup.TestBackupVulnerabilities.test_export_uses_shell) ... ok
+test_sql_injection_present (tests.test_input_backup.TestBackupVulnerabilities.test_sql_injection_present) ... ok
+test_transfer_sends_hardcoded_token (tests.test_input_backup.TestBackupVulnerabilities.test_transfer_sends_hardcoded_token) ... ok
+test_update_records_can_read_arbitrary_file (tests.test_input_backup.TestBackupVulnerabilities.test_update_records_can_read_arbitrary_file) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.031s
+
+OK
+transfer:x:1
+
+[2025-12-23T02:24:39.859077Z] STATUS
+backup TEST PASSED (exit_code=0)
+[2025-12-23T02:24:39.859077Z] RUN
+Running: cmd /c D:\Bug Bash\API\case_25_12_22\case4\v-owenhu_25_12_22_case\run_test.bat fixed
+[2025-12-23T02:24:40.562723Z] OUTPUT
+test_export_is_safe_and_creates_zip (tests.test_input_fixed.TestFixedSecurity.test_export_is_safe_and_creates_zip) ... ok
+test_sql_injection_prevented (tests.test_input_fixed.TestFixedSecurity.test_sql_injection_prevented) ... ok
+test_transfer_allows_localhost (tests.test_input_fixed.TestFixedSecurity.test_transfer_allows_localhost) ... INFO:secure_app:transfer request: target=x amount=1
+ok
+test_transfer_rejects_external_notify (tests.test_input_fixed.TestFixedSecurity.test_transfer_rejects_external_notify) ... INFO:secure_app:transfer request: target=x amount=1
+ok
+test_update_records_restricts_path (tests.test_input_fixed.TestFixedSecurity.test_update_records_restricts_path) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.059s
+
+OK
+
+[2025-12-23T02:24:40.562723Z] STATUS
+fixed TEST PASSED (exit_code=0)
+[2025-12-23T02:24:40.562723Z] FINAL
+TEST PASSED
+[2025-12-23T02:27:31.087996Z] RUN
+Running: cmd /c D:\Bug Bash\API\case_25_12_22\case4\v-owenhu_25_12_22_case\run_test.bat backup
+[2025-12-23T02:27:31.712012Z] OUTPUT
+test_export_uses_shell (tests.test_input_backup.TestBackupVulnerabilities.test_export_uses_shell) ... ok
+test_sql_injection_present (tests.test_input_backup.TestBackupVulnerabilities.test_sql_injection_present) ... ok
+test_transfer_sends_hardcoded_token (tests.test_input_backup.TestBackupVulnerabilities.test_transfer_sends_hardcoded_token) ... ok
+test_update_records_can_read_arbitrary_file (tests.test_input_backup.TestBackupVulnerabilities.test_update_records_can_read_arbitrary_file) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.043s
+
+OK
+transfer:x:1
+
+[2025-12-23T02:27:31.713020Z] STATUS
+backup TEST PASSED (exit_code=0)
+[2025-12-23T02:27:31.714013Z] RUN
+Running: cmd /c D:\Bug Bash\API\case_25_12_22\case4\v-owenhu_25_12_22_case\run_test.bat fixed
+[2025-12-23T02:27:32.415194Z] OUTPUT
+test_export_is_safe_and_creates_zip (tests.test_input_fixed.TestFixedSecurity.test_export_is_safe_and_creates_zip) ... ok
+test_sql_injection_prevented (tests.test_input_fixed.TestFixedSecurity.test_sql_injection_prevented) ... ok
+test_transfer_allows_localhost (tests.test_input_fixed.TestFixedSecurity.test_transfer_allows_localhost) ... INFO:secure_app:transfer request: target=x amount=1
+ok
+test_transfer_rejects_external_notify (tests.test_input_fixed.TestFixedSecurity.test_transfer_rejects_external_notify) ... INFO:secure_app:transfer request: target=x amount=1
+ok
+test_update_records_restricts_path (tests.test_input_fixed.TestFixedSecurity.test_update_records_restricts_path) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.071s
+
+OK
+
+[2025-12-23T02:27:32.416199Z] STATUS
+fixed TEST PASSED (exit_code=0)
+[2025-12-23T02:27:32.418136Z] FINAL
+TEST PASSED
+[2025-12-23T02:28:02.455369Z] RUN
+Running: cmd /c D:\Bug Bash\API\case_25_12_22\case4\v-owenhu_25_12_22_case\run_test.bat backup
+[2025-12-23T02:28:03.246700Z] OUTPUT
+test_export_uses_shell (tests.test_input_backup.TestBackupVulnerabilities.test_export_uses_shell) ... ok
+test_sql_injection_present (tests.test_input_backup.TestBackupVulnerabilities.test_sql_injection_present) ... ok
+test_transfer_sends_hardcoded_token (tests.test_input_backup.TestBackupVulnerabilities.test_transfer_sends_hardcoded_token) ... ok
+test_update_records_can_read_arbitrary_file (tests.test_input_backup.TestBackupVulnerabilities.test_update_records_can_read_arbitrary_file) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.046s
+
+OK
+transfer:x:1
+
+[2025-12-23T02:28:03.247813Z] STATUS
+backup TEST PASSED (exit_code=0)
+[2025-12-23T02:28:03.248799Z] RUN
+Running: cmd /c D:\Bug Bash\API\case_25_12_22\case4\v-owenhu_25_12_22_case\run_test.bat fixed
+[2025-12-23T02:28:03.977010Z] OUTPUT
+test_export_is_safe_and_creates_zip (tests.test_input_fixed.TestFixedSecurity.test_export_is_safe_and_creates_zip) ... ok
+test_sql_injection_prevented (tests.test_input_fixed.TestFixedSecurity.test_sql_injection_prevented) ... ok
+test_transfer_allows_localhost (tests.test_input_fixed.TestFixedSecurity.test_transfer_allows_localhost) ... INFO:secure_app:transfer request: target=x amount=1
+ok
+test_transfer_rejects_external_notify (tests.test_input_fixed.TestFixedSecurity.test_transfer_rejects_external_notify) ... INFO:secure_app:transfer request: target=x amount=1
+ok
+test_update_records_restricts_path (tests.test_input_fixed.TestFixedSecurity.test_update_records_restricts_path) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.066s
+
+OK
+
+[2025-12-23T02:28:03.978065Z] STATUS
+fixed TEST PASSED (exit_code=0)
+[2025-12-23T02:28:03.979106Z] FINAL
+TEST PASSED
