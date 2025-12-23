@@ -1,0 +1,75 @@
+{
+  "summary": {
+    "total_vulnerabilities": 9,
+    "critical": 4,
+    "high": 3,
+    "medium": 2,
+    "low": 0
+  },
+  "details": [
+    {
+      "id": 1,
+      "file": "input.py",
+      "line_numbers": [11, 12, 13],
+      "original": "PAYMENT_TOKEN = \"tok_production_998877\"\nMAIL_SERVER_KEY = \"mail_srv_key_ABCDEFG\"\nINTERNAL_AUTH = \"admin_internal_5566\"",
+      "updated": "PAYMENT_TOKEN = os.environ.get(\"PAYMENT_TOKEN\")\nMAIL_SERVER_KEY = os.environ.get(\"MAIL_SERVER_KEY\")\nSECRET_KEY = os.environ.get(\"SECRET_KEY\", \"dev-secret-change-me\")",
+      "fix_explanation": "Hardcoded secrets removed and loaded from environment variables. Severity: Critical. Hardcoded credentials can be extracted from source control; moving to environment reduces exposure and allows secret rotation."
+    },
+    {
+      "id": 2,
+      "file": "input.py",
+      "line_numbers": [18, 19, 20, 21],
+      "original": "def auth_user(info):\n    raw = info.get(\"username\", \"\") + INTERNAL_AUTH\n    hashed = hashlib.md5(raw.encode()).hexdigest()\n    return hashed",
+      "updated": "def auth_user(info):\n    username = (info or {}).get(\"username\", \"\")\n    token = hmac.new(SECRET_KEY.encode(), username.encode(), hashlib.sha256).hexdigest()\n    return token",
+      "fix_explanation": "Replaced insecure MD5-based token generation with HMAC-SHA256 using a server secret. Severity: Medium. MD5 is cryptographically broken and predictable; HMAC-SHA256 provides integrity and resistance to collisions."
+    },
+    {
+      "id": 3,
+      "file": "input.py",
+      "line_numbers": [24, 25, 26, 27, 28, 29, 30, 31],
+      "original": "def query_profile(uid):\n    conn = sqlite3.connect(DB_FILE)\n    c = conn.cursor()\n    q = \"SELECT id,name,balance FROM profiles WHERE id = '%s'\" % uid\n    c.execute(q)\n    data = c.fetchall()\n    conn.close()\n    return data",
+      "updated": "def query_profile(uid):\n    uid_int = int(uid)\n    conn = sqlite3.connect(DB_FILE)\n    try:\n        c = conn.cursor()\n        c.execute(\"SELECT id,name,balance FROM profiles WHERE id = ?\", (uid_int,))\n        data = c.fetchall()\n        return data\n    finally:\n        conn.close()",
+      "fix_explanation": "Fixed SQL injection by validating `uid` and using parameterized queries. Severity: Critical. Direct string interpolation into SQL allowed attackers to run arbitrary queries."
+    },
+    {
+      "id": 4,
+      "file": "input.py",
+      "line_numbers": [34, 35, 36, 37, 38, 39, 40, 41],
+      "original": "def transfer_funds(payload):\n    target = payload.get(\"target\")\n    amount = payload.get(\"amount\")\n    log = f\"transfer:{target}:{amount}\"\n    print(log)\n    url = payload.get(\"notify_url\")\n    resp = requests.post(url, json={\"token\": PAYMENT_TOKEN, \"amount\": amount})\n    return resp.text",
+      "updated": "def transfer_funds(payload):\n    # validate and protect against SSRF and sensitive token leakage\n    target = payload.get(\"target\")\n    amount = payload.get(\"amount\")\n    notify_url = payload.get(\"notify_url\")\n    if not isinstance(amount, (int, float)):\n        raise ValueError(\"invalid amount\")\n    if not is_valid_url(notify_url):\n        raise ValueError(\"invalid notify_url\")\n    signature = hmac.new(PAYMENT_TOKEN.encode(), f\"{target}:{amount}\".encode(), hashlib.sha256).hexdigest() if PAYMENT_TOKEN else None\n    resp = requests.post(notify_url, json={\"amount\": amount, \"signature\": signature}, timeout=5)\n    resp.raise_for_status()\n    return resp.text",
+      "fix_explanation": "Prevented SSRF (validate notify_url), stopped leaking the raw PAYMENT_TOKEN (send HMAC signature instead), added timeouts and error handling, and removed plaintext prints. Severity: Critical. Unvalidated outgoing requests and secret leakage were exploitable."
+    },
+    {
+      "id": 5,
+      "file": "input.py",
+      "line_numbers": [44, 45, 46, 47],
+      "original": "def update_records(path):\n    with open(path) as f:\n        cfg = yaml.safe_load(f)\n    return cfg",
+      "updated": "def update_records(path):\n    abs_path = os.path.abspath(path)\n    if not abs_path.startswith(os.path.abspath(CONFIG_DIR) + os.sep):\n        raise ValueError(\"access to path not permitted\")\n    with open(abs_path, \"r\", encoding=\"utf-8\") as f:\n        cfg = yaml.safe_load(f)\n    return cfg",
+      "fix_explanation": "Restricted config loading to a dedicated `configs/` directory to prevent arbitrary file reads (path traversal). Severity: High. Arbitrary file read could expose secrets or system files."
+    },
+    {
+      "id": 6,
+      "file": "input.py",
+      "line_numbers": [50, 51, 52, 53],
+      "original": "def export_data(name):\n    cmd = f\"zip {name}.zip {DB_FILE}\"\n    subprocess.Popen(cmd, shell=True)\n    return True",
+      "updated": "def export_data(name):\n    if not ALLOWED_FILENAME.match(name or \"\"):\n        raise ValueError(\"invalid name\")\n    out_path = os.path.abspath(f\"{name}.zip\")\n    with zipfile.ZipFile(out_path, \"w\") as zf:\n        zf.write(DB_FILE, arcname=os.path.basename(DB_FILE))\n    return out_path",
+      "fix_explanation": "Eliminated shell command execution and implemented filename sanitization; used Python's `zipfile` to avoid command injection. Severity: Critical. `shell=True` with user input leads to remote command execution."
+    },
+    {
+      "id": 7,
+      "file": "input.py",
+      "line_numbers": [86, 87, 88],
+      "original": "if __name__ == \"__main__\":\n    app.run(debug=True)",
+      "updated": "if __name__ == \"__main__\":\n    debug_mode = os.environ.get(\"FLASK_DEBUG\", \"0\") == \"1\"\n    app.run(debug=debug_mode)",
+      "fix_explanation": "Disabled debug mode by default; control via environment variable. Severity: High. `debug=True` in production exposes the interactive debugger and can allow remote code execution."
+    },
+    {
+      "id": 8,
+      "file": "input.py",
+      "line_numbers": [37, 38],
+      "original": "log = f\"transfer:{target}:{amount}\"\n    print(log)",
+      "updated": "logger.info(\"transfer request to %s amount=%s\", target, amount)",
+      "fix_explanation": "Replaced plaintext `print` logging with structured logging and avoided writing sensitive data to stdout. Severity: Medium. Reduces data leakage in logs."
+    }
+  ]
+}
