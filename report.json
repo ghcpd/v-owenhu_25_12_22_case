@@ -1,0 +1,101 @@
+{
+  "summary": {
+    "total_vulnerabilities": 8,
+    "critical": 3,
+    "high": 3,
+    "medium": 2,
+    "low": 0
+  },
+  "details": [
+    {
+      "id": 1,
+      "file": "input.py",
+      "line_numbers": [12, 13, 14],
+      "vulnerability_type": "Hardcoded Secrets",
+      "severity": "CRITICAL",
+      "original": "PAYMENT_TOKEN = \"tok_production_998877\"\nMAIL_SERVER_KEY = \"mail_srv_key_ABCDEFG\"\nINTERNAL_AUTH = \"admin_internal_5566\"",
+      "updated": "PAYMENT_TOKEN = os.environ.get(\"PAYMENT_TOKEN\", \"\")\nMAIL_SERVER_KEY = os.environ.get(\"MAIL_SERVER_KEY\", \"\")\nINTERNAL_AUTH = os.environ.get(\"INTERNAL_AUTH\", \"\")",
+      "fix_explanation": "Secrets should never be hardcoded in source code. Changed to load from environment variables instead. This prevents accidental exposure of API tokens and keys in version control systems. Environment variables should be managed securely through CI/CD systems or secret management tools."
+    },
+    {
+      "id": 2,
+      "file": "input.py",
+      "line_numbers": [28],
+      "vulnerability_type": "SQL Injection",
+      "severity": "CRITICAL",
+      "original": "q = \"SELECT id,name,balance FROM profiles WHERE id = '%s'\" % uid\nc.execute(q)",
+      "updated": "q = \"SELECT id, name, balance FROM profiles WHERE id = ?\"\nc.execute(q, (uid,))",
+      "fix_explanation": "String formatting in SQL queries allows attackers to inject malicious SQL code. Changed to use parameterized queries (prepared statements) which safely separate data from code. Also added input validation with regex and length checks (lines 52-56 in fixed version)."
+    },
+    {
+      "id": 3,
+      "file": "input.py",
+      "line_numbers": [37],
+      "vulnerability_type": "Server-Side Request Forgery (SSRF)",
+      "severity": "CRITICAL",
+      "original": "url = payload.get(\"notify_url\")\nresp = requests.post(url, json={\"token\": PAYMENT_TOKEN, \"amount\": amount})",
+      "updated": "url = payload.get(\"notify_url\")\nif not url or not is_url_safe(url):\n    raise ValueError(\"Invalid or unsafe notification URL\")\nresp = requests.post(url, json={\"token\": PAYMENT_TOKEN, \"amount\": amount}, timeout=5)",
+      "fix_explanation": "User-controlled URLs can be exploited to make requests to internal services. Added is_url_safe() function to validate URLs against a whitelist of allowed domains. Also added timeout parameter to prevent hanging requests. This prevents attackers from using the application to attack internal infrastructure or make unauthorized requests."
+    },
+    {
+      "id": 4,
+      "file": "input.py",
+      "line_numbers": [39],
+      "vulnerability_type": "Arbitrary File Read / Path Traversal",
+      "severity": "HIGH",
+      "original": "def update_records(path):\n    with open(path) as f:\n        cfg = yaml.safe_load(f)\n    return cfg",
+      "updated": "def update_records(path):\n    if not path or not isinstance(path, str):\n        raise ValueError(\"Invalid path\")\n    allowed_dir = os.path.abspath(\"config\")\n    file_path = os.path.abspath(os.path.join(\"config\", path))\n    if not file_path.startswith(allowed_dir):\n        raise ValueError(\"Access denied: Invalid file path\")\n    if not os.path.exists(file_path):\n        raise ValueError(\"File not found\")\n    with open(file_path) as f:\n        cfg = yaml.safe_load(f)\n    return cfg",
+      "fix_explanation": "User-controlled file paths can access arbitrary files through path traversal attacks (e.g., '../../../etc/passwd'). Fixed by validating paths are within the 'config' directory using os.path.abspath() and startswith() checks. This ensures attackers cannot read files outside the intended directory."
+    },
+    {
+      "id": 5,
+      "file": "input.py",
+      "line_numbers": [47],
+      "vulnerability_type": "Command Injection",
+      "severity": "CRITICAL",
+      "original": "cmd = f\"zip {name}.zip {DB_FILE}\"\nsubprocess.Popen(cmd, shell=True)",
+      "updated": "subprocess.run(\n    [\"zip\", f\"{name}.zip\", DB_FILE],\n    shell=False,\n    check=True,\n    timeout=30\n)",
+      "fix_explanation": "Using shell=True with user-controlled input allows arbitrary command execution. Fixed by using subprocess.run() with shell=False and passing arguments as a list, which prevents shell metacharacter interpretation. Also added input validation with regex validation (lines 169-171 in fixed version) and a timeout to prevent resource exhaustion."
+    },
+    {
+      "id": 6,
+      "file": "input.py",
+      "line_numbers": [21],
+      "vulnerability_type": "Weak Password Hashing",
+      "severity": "HIGH",
+      "original": "hashed = hashlib.md5(raw.encode()).hexdigest()",
+      "updated": "from argon2 import PasswordHasher\nph = PasswordHasher()\nhashed = ph.hash(password)",
+      "fix_explanation": "MD5 is cryptographically broken and unsuitable for password hashing. Replaced with Argon2, a modern password hashing algorithm resistant to GPU/ASIC attacks. Removed the insecure practice of concatenating INTERNAL_AUTH to the password. Argon2 is memory-hard and slow, making it resistant to brute-force attacks."
+    },
+    {
+      "id": 7,
+      "file": "input.py",
+      "line_numbers": [73],
+      "vulnerability_type": "Debug Mode Enabled in Production",
+      "severity": "HIGH",
+      "original": "app.run(debug=True)",
+      "updated": "app.run(debug=False, host=\"127.0.0.1\")",
+      "fix_explanation": "Flask's debug=True mode enables the interactive debugger which allows code execution on the server. It also exposes sensitive information like environment variables and code. Disabled debug mode for production and restricted to localhost binding (127.0.0.1) to prevent remote access."
+    },
+    {
+      "id": 8,
+      "file": "input.py",
+      "line_numbers": [51, 58, 64, 68, 73, 78, 84, 88],
+      "vulnerability_type": "Missing Input Validation and Error Handling",
+      "severity": "MEDIUM",
+      "original": "@app.route(\"/auth\", methods=[\"POST\"])\ndef api_auth():\n    info = request.json\n    return jsonify({\"token\": auth_user(info)})",
+      "updated": "@app.route(\"/auth\", methods=[\"POST\"])\ndef api_auth():\n    try:\n        info = request.json\n        if not info:\n            return jsonify({\"error\": \"Invalid request\"}), 400\n        return jsonify({\"token\": auth_user(info)})\n    except ValueError as e:\n        logger.warning(f\"Auth error: {e}\")\n        return jsonify({\"error\": str(e)}), 400\n    except Exception as e:\n        logger.error(f\"Unexpected auth error: {e}\")\n        return jsonify({\"error\": \"Internal server error\"}), 500",
+      "fix_explanation": "All endpoints were missing try-catch blocks and input validation. Added comprehensive error handling to all routes to prevent information disclosure through exception traces. Added logging for security events and proper HTTP status codes. All functions now validate input types and values before processing."
+    },
+    {
+      "id": 9,
+      "file": "input.py",
+      "line_numbers": [35],
+      "vulnerability_type": "Information Disclosure via Logging",
+      "severity": "MEDIUM",
+      "original": "log = f\"transfer:{target}:{amount}\"\nprint(log)",
+      "updated": "log = f\"transfer:{target}:{amount}\"\nlogger.info(log)",
+      "fix_explanation": "Using print() outputs to stdout which may be exposed in logs or container outputs. Changed to use Python's logging module (logging.INFO level) which can be properly configured for secure handling. Added import logging and configured logger at module level for consistent, secure logging across the application."
+    }
+  ]
+}
